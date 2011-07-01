@@ -35,6 +35,19 @@ abstract class Jelly_Core_Request
 {
 
   /**
+   * Asks the dependency injection container the model name
+   *
+   * @param string $definition_key definition key
+   *
+   * @return string model name
+   */
+  protected function _get_model_name($definition_key)
+  {
+    return $this->container->get_definition($definition_key)->arguments[0];
+  }
+
+
+  /**
    * Dummy constructor needed by in dependency injector
    *
    * @return null
@@ -48,15 +61,18 @@ abstract class Jelly_Core_Request
   /**
    * Get a Jelly_Builder with container aggregation
    *
-   * @param string $model name of the model
-   * @param mixed  $key   optional key
+   * @param string $definition_key name of the DI definition
+   * @param mixed  $key            optional primary key to fetch from database
    *
    * @return Jelly_Builder builder instance
    */
-  public function query($model, $key = NULL)
+  public function query($definition_key, $key = NULL)
   {
-    $builder            = Jelly::query($model, $key);
-    $builder->container = $container;
+    $model_name = $this->_get_model_name($definition_key);
+
+    $builder                 = Jelly::query($model_name, $key);
+    $builder->container      = $this->container;
+    $builder->definition_key = $definition_key;
 
     return $builder;
   }
