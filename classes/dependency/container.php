@@ -47,4 +47,29 @@ class Dependency_Container extends Kohana_Dependency_Container
     return $this->_definitions->get($definition_key);
   }
 
+
+  /**
+   * Fetches a definition key from a model name
+   *
+   * @param string $model_name model name
+   *
+   * @return string definition key
+   */
+  public function get_definition_key_from_model($model_name)
+  {
+    foreach ($this->_definitions as $key => $definition)
+    {
+      if (isset($definition->arguments[0])
+          AND $definition->arguments[0] == strtolower($model_name))
+      {
+        return $key;
+      }
+    }
+
+    throw new Kohana_Exception(
+        'Can\'t get definition key from model: '.
+        'model «:modelname» is not configured.',
+        array(':modelname' => $model_name)
+    );
+  }
 }
