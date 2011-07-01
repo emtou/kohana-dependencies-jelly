@@ -34,6 +34,11 @@ defined('SYSPATH') OR die('No direct access allowed.');
 abstract class Jelly_Core_Request
 {
 
+  /**
+   * Dummy constructor needed by in dependency injector
+   *
+   * @return null
+   */
   public function __construct()
   {
 
