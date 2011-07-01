@@ -39,4 +39,21 @@ abstract class Jelly_Core_Request
 
   }
 
+
+  /**
+   * Get a Jelly_Builder with container aggregation
+   *
+   * @param string $model name of the model
+   * @param mixed  $key   optional key
+   *
+   * @return Jelly_Builder builder instance
+   */
+  public function query($model, $key = NULL)
+  {
+    $builder            = Jelly::query($model, $key);
+    $builder->container = $container;
+
+    return $builder;
+  }
+
 } // End class Jelly_Core_Request
